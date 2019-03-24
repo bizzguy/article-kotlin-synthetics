@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment, container, false);
+        ButterKnife.bind(this, view);
 
         textView.setText(Integer.toString(counter));
 
