@@ -9,7 +9,7 @@
     tools:context=".ui.main.MainFragment">
 
     <TextView
-        android:id="@+id/counter"
+        android:id="@+id/counterText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="99"
