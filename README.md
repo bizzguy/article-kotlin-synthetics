@@ -1,5 +1,11 @@
 # Replacing ButterKnife with Kotlin Synthetics
 
+TLDR
+
+Reference to any sythetic view elements must not be made in "onCreateView".  
+Instead, place them in "onViewCreated" or any methods called after that.
+This is necessary because synthetics use #Fragment.getView# to find view elements.
+
 
 Create new project with single fragment
 - create new project with no activity
