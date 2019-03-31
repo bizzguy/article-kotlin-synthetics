@@ -1,10 +1,10 @@
-package com.footlocker.sample.kotlin6;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.article.kotlinsynthetics.a_java_findviewbyid;
 
 import android.os.Bundle;
 
-import com.footlocker.sample.kotlin6.ui.main.MainFragment;
+import com.article.kotlinsynthetics.R;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,10 +12,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        getSupportActionBar().setTitle("Java - findViewById");
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, MainFragment.Companion.newInstance())
+                    .replace(R.id.container, MainFragment.newInstance())
                     .commitNow();
         }
     }
+
 }

@@ -1,4 +1,4 @@
-package com.footlocker.sample.kotlin6;
+package com.footlocker.sample.kotlinsynthetics;
 
 import org.junit.Test;
 
