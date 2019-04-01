@@ -40,4 +40,12 @@ Questions
  - AppCompatActivity or FragmentActivity
  -- AppCompatActivity extends FragmentActivity
  - why do kotlin butterknife variables default to private
- - check what a regular variable defaults to
+ - check what modiefier a regular variable defaults to (ie private, val/var)
+ 
+ Create a matrix of features to compare
+ - lines of code
+ - name space
+ - caching / performance
+ - use of annotations (might slow performance)
+ - recommended by Jake Wharton yes/no
+ 
