@@ -36,3 +36,8 @@ Comparison of BK with KS for each of these concerns
 - name space
 -- show what happend if use same id in "include" or id from another activity
 
+Questions
+ - AppCompatActivity or FragmentActivity
+ -- AppCompatActivity extends FragmentActivity
+ - why do kotlin butterknife variables default to private
+ - check what a regular variable defaults to

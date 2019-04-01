@@ -30,7 +30,7 @@
             android:name=".d_kotlin_synthetics.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".e_kotlin_synthetics_activity.MainActivity"
+            android:name=".e_kotlin_synthetics_no_fragment.MainActivity"
             android:exported="true" />
 
     </application>

@@ -21,7 +21,9 @@ public class MainFragment extends Fragment {
 
     @BindView(R.id.counterText)
     TextView counterText;
-    private Button button;
+
+    @BindView(R.id.button)
+    Button button;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -34,9 +36,6 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.main_fragment, container, false);
 
         ButterKnife.bind(this, view);
-        //counterText = view.findViewById(R.id.counterText);
-
-        button = view.findViewById(R.id.button);
 
         counterText.setText(Integer.toString(counter));
 

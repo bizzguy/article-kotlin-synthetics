@@ -1,4 +1,4 @@
-package com.article.kotlinsynthetics.e_kotlin_synthetics_activity
+package com.article.kotlinsynthetics.e_kotlin_synthetics_no_fragment
 
 import androidx.appcompat.app.AppCompatActivity
 
@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+        setContentView(R.layout.main_fragment)
 
         supportActionBar!!.title = "Kotlin - synthetics - No Fragment"
 
@@ -25,4 +25,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+
+
 }

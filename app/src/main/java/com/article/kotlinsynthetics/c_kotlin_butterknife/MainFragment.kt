@@ -28,9 +28,6 @@ class MainFragment : Fragment() {
         val view = inflater.inflate(R.layout.main_fragment, container, false)
 
         ButterKnife.bind(this, view)
-        //counterText = view.findViewById(R.id.counterText);
-
-        button = view.findViewById(R.id.button)
 
         counterText!!.text = Integer.toString(counter)
 
