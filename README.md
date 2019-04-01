@@ -2,9 +2,12 @@
 
 TLDR
 
-Reference to any sythetic view elements must not be made in "onCreateView".  
-Instead, place them in "onViewCreated" or any methods called after that.
-This is necessary because synthetics use #Fragment.getView# to find view elements.
+Reference to any sythetic view elements must not be made in "Fragment.onCreateView".  
+Instead, place them in "Fragment.onViewCreated" or any methods called after that.
+This is necessary because synthetics use #Fragment.getView# to find view elements,
+which is only set by the return from "Fragment.onCreateView"
+
+This does not apply to activities.
 
 
 Create new project with single fragment
