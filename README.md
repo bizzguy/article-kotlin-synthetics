@@ -2,9 +2,12 @@
 
 TLDR
 
-Reference to any sythetic view elements must not be made in "onCreateView".  
-Instead, place them in "onViewCreated" or any methods called after that.
-This is necessary because synthetics use #Fragment.getView# to find view elements.
+Reference to any sythetic view elements must not be made in "Fragment.onCreateView".  
+Instead, place them in "Fragment.onViewCreated" or any methods called after that.
+This is necessary because synthetics use #Fragment.getView# to find view elements,
+which is only set by the return from "Fragment.onCreateView"
+
+This does not apply to activities.
 
 
 Create new project with single fragment
@@ -69,3 +72,13 @@ Questions
  https://proandroiddev.com/kotlin-android-synthetics-performance-analysis-with-butterknife-90a54ca4325d
 
  medium - include stackoverflow link and github/gist links
+
+ - check what modiefier a regular variable defaults to (ie private, val/var)
+ 
+ Create a matrix of features to compare
+ - lines of code
+ - name space
+ - caching / performance
+ - use of annotations (might slow performance)
+ - recommended by Jake Wharton yes/no
+ 
