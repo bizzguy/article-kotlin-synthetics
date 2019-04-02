@@ -41,3 +41,31 @@ Questions
  -- AppCompatActivity extends FragmentActivity
  - why do kotlin butterknife variables default to private
  - check what a regular variable defaults to
+ - what does "kapt" mean (acronym?)
+ - delete "build" directory before starting talk
+ - refresh MainFragment before starting talk
+
+ - Kotlin properties are private by default (with getters/setters)
+ -- https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html
+
+ when is binding done (performance)
+ - BK - all fields at start up
+ - KS - only fields that are actually used, when they are used
+ name space
+ - FV - all layouts
+ - BK - only inflated view
+ - KS - only inflated view
+
+ - only have one layout
+ - adapters could have layout encapsulated within them
+
+ KS
+ - imports fields in layout at compile time
+ - creates hidden caching function that uses findViewById
+
+ what data type is field when using KS
+
+ very useful article about performance trade-offs
+ https://proandroiddev.com/kotlin-android-synthetics-performance-analysis-with-butterknife-90a54ca4325d
+
+ medium - include stackoverflow link and github/gist links

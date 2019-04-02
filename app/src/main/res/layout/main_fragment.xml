@@ -11,7 +11,7 @@
         android:id="@+id/counterText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="99"
+        tools:text="0"
         android:textSize="96sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
