@@ -30,7 +30,7 @@ public class MainFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment, container, false);
 
-        counterText = view.findViewById(R.id.counterText);
+        counterText = view.findViewById(R.id.text_counter);
 
         button = view.findViewById(R.id.button);
 

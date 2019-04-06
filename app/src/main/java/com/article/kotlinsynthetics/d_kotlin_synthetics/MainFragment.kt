@@ -20,11 +20,11 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        counterText!!.text = Integer.toString(counter)
+        text_counter!!.text = Integer.toString(counter)
 
         button!!.setOnClickListener {
             counter++
-            counterText!!.text = Integer.toString(counter)
+            text_counter!!.text = Integer.toString(counter)
         }
     }
 

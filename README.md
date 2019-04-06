@@ -42,6 +42,12 @@ Download the sample project from
 
 http://www.github.com/bizzguy/article-kotlin-synthetics
 
+This has the gradle files for kotlin and Butterknife
+
+Create an activity
+Create a Fragment
+Create a layout
+
 
 Create new project with single fragment
 - create new project with no activity

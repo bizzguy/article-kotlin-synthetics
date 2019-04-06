@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.other_layout.*
 
 class MainFragment : Fragment() {
 
-    internal var counter = 0
+    internal var counter = 101
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.main_fragment, container, false)
@@ -18,13 +18,23 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        otherCounterText.text = Integer.toString(counter)
-
-        counterText.text = "aaa"
+        text_counter.text = Integer.toString(counter)
 
         button.setOnClickListener { v ->
             counter++
-            counterText!!.text = Integer.toString(counter)
+            text_counter!!.text = Integer.toString(counter)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt("counter", counter)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if (savedInstanceState != null) {
+            counter = savedInstanceState.getInt("counter")
         }
     }
 

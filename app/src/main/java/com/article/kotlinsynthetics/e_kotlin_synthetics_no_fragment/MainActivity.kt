@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainActivity : AppCompatActivity() {
 
-    var counter = 0
+    var counter = 110
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,11 +17,11 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar!!.title = "Kotlin - synthetics - No Fragment"
 
-        counterText!!.text = Integer.toString(counter)
+        text_counter!!.text = Integer.toString(counter)
 
         button!!.setOnClickListener {
             counter++
-            counterText!!.text = Integer.toString(counter)
+            text_counter!!.text = Integer.toString(counter)
         }
 
     }

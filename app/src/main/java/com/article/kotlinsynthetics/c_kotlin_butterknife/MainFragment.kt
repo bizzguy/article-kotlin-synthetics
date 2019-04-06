@@ -16,7 +16,7 @@ class MainFragment : Fragment() {
 
     internal var counter = 0
 
-    @BindView(R.id.counterText)
+    @BindView(R.id.text_counter)
     @JvmField
     var counterText: TextView? = null
 
