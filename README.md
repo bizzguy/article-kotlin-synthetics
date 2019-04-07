@@ -4,23 +4,21 @@
 
 Kotlin synthetics is an excellent replacement for either findViewById or
 ButterKnife when accessing view elements in XML layouts.
-It reduces the lines of code and does not use annotations.
-Since it uses findViewById internally, it is just as performant.
+It reduces the lines of code, avoids annotations and provides some scoping.
+Since it uses findViewById internally, it is just as performant as the other two techniques.
 
-However, you must be careful when using it in Fragments since
+But there are some gotchas.  You must be careful when using it in Fragments since
 it depends on the "Fragment.onCreateView" method having been
-run.  Ideally, use it in the "Fragment.onViewCreated" method 
-(or any method executed after that)
-
-This is necessary because synthetics use #Fragment.getView# to find view elements,
-which is only set by the return from "Fragment.onCreateView"
+run.  Ideally, use it in the "Fragment.onViewCreated" method or any subsequent method.
 
 In Activities, you can reference synthetics anytime after
 Activity.setContentView is called.
 
 ### Usage
 
-Layout
+Nothing special must be done to existing layouts.  Use them as they are.
+
+### Layout
 ```xml
 <TextView
   android:id="@id/myTextView"
@@ -29,26 +27,29 @@ Layout
 ```
 The name of the field in code must be the same as the id (and the same case)
 
-Kotlin Code
+### Kotlin Code
+
+Simple reference the element with the same name as in the layout.  And there is no need to create an instance property.
+
 ```kotlin
 myTextView.text = "Hello World"
 ```
 
-Note:  There is no need to create a property for "myTextView"
+## The Talk
 
-## Getting Started
+### Getting Started Code
 
 Download the sample project from
 
 http://www.github.com/bizzguy/article-kotlin-synthetics
 
-## Remove starter project
+### Remove starter project
 
-### Demonstrate features
+#### Demonstrate features
 
-### See Gradle Libraries
+#### See Gradle Libraries
 
-#### KS requires
+##### KS requires
 - Kotlin language
 - Kotlin extension library (this is something specific to android)
 
