@@ -223,7 +223,7 @@ https://medium.com/learning-new-stuff/tips-for-writing-medium-articles-df8d7c7b3
 <table>
   
 <tr>
-  <th width="16% >Feature</th>
+  <th width="16%">Feature</th>
   <th width="28%">Android findViewById</th>
   <th width="28%">ButterKnife</th>
   <th width="28%">Kotlin Synthetics</th>
