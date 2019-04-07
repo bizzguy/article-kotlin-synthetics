@@ -1,4 +1,4 @@
-# Replacing ButterKnife with Kotlin Synthetics
+# Replacing ButterKnife with Kotlin Synthetics in Android Apps
 
 ## TL;DR
 
