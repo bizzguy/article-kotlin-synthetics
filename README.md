@@ -246,10 +246,10 @@ https://medium.com/learning-new-stuff/tips-for-writing-medium-articles-df8d7c7b3
 </tr>
 
 <tr>
-  <td>Other 
-  <td>sd f  sf sd fs f sf s fs fs f sf s fs s f s s f </td>
-  <td>s d fs  s sd fsfsfsdf sd fs df sdf s df sd fs  sf </td>
-  <td>s d fs  s sd fsfsfsdf sd fs df sdf s df sd fs  sf </td>
+  <td width="10%">Other 
+  <td width="30%">sd f  sf sd fs f sf s fs fs f sf s fs s f s s f </td>
+  <td width="30%">s d fs  s sd fsfsfsdf sd fs df sdf s df sd fs  sf </td>
+  <td width="30%">s d fs  s sd fsfsfsdf sd fs df sdf s df sd fs  sf </td>
 </tr>
 
 <tr>
