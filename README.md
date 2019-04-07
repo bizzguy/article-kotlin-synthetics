@@ -222,16 +222,11 @@ https://medium.com/learning-new-stuff/tips-for-writing-medium-articles-df8d7c7b3
 
 <table>
   
-  <col width="10%">
-  <col width="30%">
-  <col width="30%">
-  <col width="30%">
-  
 <tr>
-  <th>Feature</th>
-  <th>Android findViewById</th>
-  <th>ButterKnife</th>
-  <th>Kotlin Synthetics</th>
+  <th width="16% >Feature</th>
+  <th width="28%">Android findViewById</th>
+  <th width="28%">ButterKnife</th>
+  <th width="28%">Kotlin Synthetics</th>
 </tr>
 
 <tr>
@@ -243,10 +238,10 @@ https://medium.com/learning-new-stuff/tips-for-writing-medium-articles-df8d7c7b3
 </tr>
 
 <tr>
-  <td width="13%">Number of Lines</td> 
-  <td width="29%">sd f  sf sd fs f sf s fs fs f sf s fs s f s s f </td>
-  <td width="29%">s d fs  s sd fsfsfsdf sd fs df sdf s df sd fs  sf </td>
-  <td width="29%">s d fs  s sd fsfsfsdf sd fs df sdf s df sd fs  sf </td>
+  <td>Number of Lines</td> 
+  <td>sd f  sf sd fs f sf s fs fs f sf s fs s f s s f </td>
+  <td>s d fs  s sd fsfsfsdf sd fs df sdf s df sd fs  sf </td>
+  <td>s d fs  s sd fsfsfsdf sd fs df sdf s df sd fs  sf </td>
 </tr>
 
 <tr>
