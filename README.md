@@ -5,11 +5,11 @@
 Kotlin synthetics is an excellent replacement for either findViewById or
 ButterKnife when accessing view elements in XML layouts.
 It reduces the lines of code, avoids annotations and provides some scoping.
-Since it uses findViewById internally, it is just as performant as the other two techniques.
+Since it uses `findViewById` internally, it is just as performant as the other two techniques.
 
 But there are some gotchas.  You must be careful when using it in Fragments since
-it depends on the `Fragment.onCreateView` method having been
-run.  Ideally, use it in the "Fragment.onViewCreated" method or any subsequent method.
+it depends on the `Fragment#onCreateView` method having been
+run.  Ideally, use it in the `Fragment#onViewCreated` method or any subsequent method.
 
 In Activities, you can reference synthetics anytime after
 Activity.setContentView is called.
