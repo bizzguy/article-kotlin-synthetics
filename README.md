@@ -35,6 +35,16 @@ Simple reference the element with the same name as in the layout.  And there is 
 myTextView.text = "Hello World"
 ```
 
+### Libraries and Plugins
+
+Just include the Kotlin Extensions in your project.  
+It will be included automatically when you create a new project with the Android Studion wizard.
+
+app/build.gradle
+```
+apply plugin: 'kotlin-android-extensions'
+```
+
 ## The Talk
 
 ### Getting Started Code
