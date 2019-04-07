@@ -145,15 +145,15 @@ public void setContentView(int resId) {
 ### Converting Kotlin ButterKnife to Kotlin Synthetics
 
 #### Remove BK Annotations
-```
-    ~~@BindView(R.id.counterText)~~
-    ~~@JvmField~~
+~~~
+    //@BindView(R.id.counterText)
+    //@JvmField
     var counterText: TextView? = null
 
-    ~~@BindView(R.id.button)~~
-    ~~@JvmField~~
+    //@BindView(R.id.button)
+    //@JvmField
     var button: Button? = null
-```
+~~~
 #### Remove BK Binding
 #### Verify that BK is being used
 #### Remove properties since they are not used
