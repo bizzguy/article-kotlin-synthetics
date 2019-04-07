@@ -42,6 +42,16 @@ Download the sample project from
 
 http://www.github.com/bizzguy/article-kotlin-synthetics
 
+## Remove starter project
+
+### Demonstrate features
+
+### See Gradle Libraries
+
+#### KS requires
+- Kotlin language
+- Kotlin extension library (this is something specific to android)
+
 
 Create new project with single fragment
 - create new project with no activity
@@ -131,3 +141,22 @@ public void setContentView(int resId) {
     mOriginalWindowCallback.onContentChanged();
 }
 ```
+
+### Converting Kotlin ButterKnife to Kotlin Synthetics
+
+#### Remove BK Annotations
+#### Remove BK Binding
+#### Verify that BK is being used
+#### Remove properties since they are not used
+#### 
+
+
+## Resources
+
+## Followup Questions
+ 
+- How is all this effected by Android Data Binding
+
+- Don't have to convert in some many steps.  Just go right to Kotlin Synthetics
+
+- Alternate naming schemes for layout elements.
