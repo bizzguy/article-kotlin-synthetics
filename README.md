@@ -233,15 +233,14 @@ https://medium.com/learning-new-stuff/tips-for-writing-medium-articles-df8d7c7b3
 </tr>
 
 <tr>
-  <td>Feature</td>
+  <td>Scope</td>
   <td>The top level directory that contains your app. If this option is used then
-it assumed your scripts are in</td>
-  </tr>
-  <tr></tr>
-  <tr></tr>
+    it assumed your scripts are in</td>
+  <td></td>
+  <td></td>
+</tr>
+  
 <tr>
-  
-  
 <td>baseUrl</td>
 <td>By default, all modules are located relative to this path. If baseUrl is not
 explicitly set, then all modules are loaded relative to the directory that holds
