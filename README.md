@@ -231,6 +231,14 @@ What is the scope of findView
 
 https://medium.com/learning-new-stuff/tips-for-writing-medium-articles-df8d7c7b33bf
 
+https://en.wikipedia.org/wiki/Colossal_Cave_Adventure
+https://blog.codinghorror.com/learn-to-read-the-source-luke/
+https://www.brandonbloom.name/blog/2012/04/16/learn-to-read-the-source-luke/
+
+Text based adventure games
+Professor - don't read code is same as can't read code
+Design Patters
+
 <table>
   
 <tr>
