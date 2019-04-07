@@ -215,7 +215,6 @@ What is the scope of findView
 | Scope | | | |
 | Number of Lines | | | |
 | Performance | | | |
-
 | Other 
 |sd f  sf sd fs f sf s fs fs f sf s fs s f s s f 
 | s d fs  s sd fsfsfsdf sd fs df sdf s df sd fs  sf
