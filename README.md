@@ -225,6 +225,11 @@ https://medium.com/learning-new-stuff/tips-for-writing-medium-articles-df8d7c7b3
 
 <table>
   
+  <col width="10%">
+  <col width="30%">
+  <col width="30%">
+  <col width="30%">
+  
 <tr>
   <th>Feature</th>
   <th>Android findViewById</th>
