@@ -207,3 +207,13 @@ What is the scope of findView
 - Don't have to convert in some many steps.  Just go right to Kotlin Synthetics
 
 - Alternate naming schemes for layout elements.
+
+## Comparison
+
+| Feature | Java findViewById | ButterKnife | Kotlin Synthetics |
+| --- | --- | --- | --- |
+| Scope | | | |
+| Number of Lines | | | |
+| Performance | | | |
+| Other | | | |
+
