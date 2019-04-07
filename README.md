@@ -154,10 +154,48 @@ public void setContentView(int resId) {
     //@JvmField
     var button: Button? = null
 ~~~
+
 #### Remove BK Binding
+~~~
+     //ButterKnife.bind(this, view)
+~~~
+
 #### Verify that BK is being used
+
 #### Remove properties since they are not used
-#### 
+~~~
+    //var counterText: TextView? = null
+
+    //var button: Button? = null
+~~~
+
+#### Verify that BK is now being used
+
+See import statements
+
+See code for __
+
+Hash Map
+Wierdly named method
+Calls findViewById and caches results
+
+Which findView is running
+- View
+- Traversal
+- ViewGroup override of traversal
+
+Could Android have cached the result of findViewById
+
+What is the scope of findView
+- getView
+- set in fragment
+- whatever is returned by the onCreateView
+- which is the layout
+- can there be two layouts (other)
+- yes, but you'll see it in the imports
+- often it is an adapter layout which could be moved to adapter
+- create link check to very that there are not two synthetic imports
+-- this happens alot because of copy and paste
 
 
 ## Resources
