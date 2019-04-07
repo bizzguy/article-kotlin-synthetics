@@ -223,34 +223,25 @@ What is the scope of findView
 
 https://medium.com/learning-new-stuff/tips-for-writing-medium-articles-df8d7c7b33bf
 
-|  Sequence   | Result                                                        |
-|-------------|---------------------------------------------------------------|
-| `a?c`       | Matches `abc`, `axc`, and `aac`. Does not match `ac`, `abbc`, | 
-|             | or `a/c`.                                                     |
-|-------------|---------------------------------------------------------------|
-| `a*c`       | Matches "ac", "abc" and "azzzzzzzc". Does not match "a/c".    |
-|-------------|---------------------------------------------------------------|
-| `foo...bar` | Matches "foobar", "fooxbar", and "fooz/blaz/rebar". Does not  |
-|             | match "fo/obar", "fobar" or "food/bark".                      |
-|-------------|---------------------------------------------------------------|
-| `....obj`   | Matches all files anywhere in the current hierarchy that end  |
-|             | in ".obj". Note that the first three periods are interpreted  |
-|             | as "...", and the fourth one is interpreted as a literal "."  |
-|             | character.                                                    |
-|-------------|---------------------------------------------------------------|
-
-
 <table>
+  
 <tr>
-<th>Argument</th>
-<th>Description</th>
+  <th>Feature</th>
+  <th>Android findViewById</th>
+  <th>ButterKnife</th>
+  <th>Kotlin Synthetics</th>
 </tr>
+
 <tr>
-<td>appDir</td>
-<td>The top level directory that contains your app. If this option is used then
+  <td>Feature</td>
+  <td>The top level directory that contains your app. If this option is used then
 it assumed your scripts are in</td>
-</tr>
+  </tr>
+  <tr></tr>
+  <tr></tr>
 <tr>
+  
+  
 <td>baseUrl</td>
 <td>By default, all modules are located relative to this path. If baseUrl is not
 explicitly set, then all modules are loaded relative to the directory that holds
