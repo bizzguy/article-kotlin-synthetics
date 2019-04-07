@@ -14,11 +14,11 @@ run.  Ideally, use it in the `Fragment#onViewCreated` method or any subsequent m
 In Activities, you can reference synthetics anytime after
 Activity.setContentView is called.
 
-### Usage
-
-Nothing special must be done to existing layouts.  Use them as they are.
+### Using Kotlin Synthetics
 
 ### Layout
+Nothing special must be done to existing layouts.  Use them as they are.
+
 ```xml
 <TextView
   android:id="@id/myTextView"
