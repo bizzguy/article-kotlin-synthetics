@@ -29,7 +29,7 @@ The name of the field in code must be the same as the id (and the same case)
 
 ### Kotlin Code
 
-Simple reference the element with the same name as in the layout.  And there is no need to create an instance property.
+Just reference the element with the same name as in the layout.  There is no need to create an instance property.
 
 ```kotlin
 myTextView.text = "Hello World"
@@ -37,25 +37,26 @@ myTextView.text = "Hello World"
 
 ### Libraries and Plugins
 
-Just include the Kotlin Extensions in your project.  
-It will be included automatically when you create a new project with the Android Studion wizard.
+Just include the Kotlin Extensions in your project.  It will be included automatically when you create a new project with the Android Studion wizard.  There is no need to add any additional libraries.
 
 app/build.gradle
 ```
 apply plugin: 'kotlin-android-extensions'
 ```
 
-## The Talk
-
-### Getting Started Code
+## Getting Started Code
 
 Download the sample project from
 
-http://www.github.com/bizzguy/article-kotlin-synthetics
+    http://www.github.com/bizzguy/article-kotlin-synthetics
 
-### Remove starter project
+### Walkthrough the Code
 
-#### Demonstrate features
+#### Sample App Features
+
+Display a screen with a counter starter at 0 and a button which will increment the counter when pressesd.
+
+<< screen shot >>
 
 #### See Gradle Libraries
 
