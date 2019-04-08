@@ -11,12 +11,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        getSupportActionBar().setTitle("Kotlin Talk");
-
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, MainFragment.Companion.newInstance())
+                    .replace(R.id.container, MainFragment.newInstance())
                     .commitNow();
         }
     }
+
 }
