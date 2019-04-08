@@ -78,6 +78,8 @@ Activity will create a gragment.  The fragment will control the screen.
 
 # Step 1 - Bind layout elements to Java properties using `View#findViewById`
 
+This step is just a quick reminder of how to connect XML layout elements to Java code.  This just puts us all on the same page for those who might be new to Android.
+
 #### Add properties to hold view references
 
 ```java
@@ -118,9 +120,20 @@ View traversal is over-ridden by ViewGroup
 
 # Step 2 - Replace `View#findViewById` with ButterKnife
 
+Let's use the ButterKnife library to simplify the binding. 
+
+Since BK uses annotations, we can explore the generated code to understand how BK actually binds the view elements.
+
+We'll discover that it also uses findViewById.
+
 # Step 3 - Convert to Kotlin
 
+We'll convert the Java code to Kotlin just to emphasize the idea that any Java code (and any annotations) can also 
+run in Kotlin. 
+
 # Step 4 - Replace Butterknife with Kotlin Synthetics
+
+Now we'll actually replace ButterKnife with Kotlin Synthetics.
 
 #### Remove BK Annotations
 ```kotlin
