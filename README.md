@@ -312,11 +312,11 @@ What is the scope of findView
 
   Text-based Role Playing Game
 
-    [https://en.wikipedia.org/wiki/Colossal_Cave_Adventure]
+      [https://en.wikipedia.org/wiki/Colossal_Cave_Adventure]
 
   Read the Code!
 
-    [https://blog.codinghorror.com/learn-to-read-the-source-luke/]
+      [https://blog.codinghorror.com/learn-to-read-the-source-luke/]
 
 
 [https://www.brandonbloom.name/blog/2012/04/16/learn-to-read-the-source-luke/]
