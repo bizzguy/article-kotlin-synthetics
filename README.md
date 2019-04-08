@@ -78,7 +78,8 @@ Activity will create a gragment.  The fragment will control the screen.
 
 # Step 1 - Bind layout elements to Java properties using `View#findViewById`
 
-This step is just a quick reminder of how to connect XML layout elements to Java code.  This just puts us all on the same page for those who might be new to Android.
+This step is just a quick reminder of how to connect XML layout elements to Java code.  This just puts us all on the same page for those who might be new to Android and gives us a bit of a deep-dive into how `findViewById` actually works. 
+This will be imporant since all the binding techniques use `findViewById` under the hood.
 
 #### Add properties to hold view references
 
