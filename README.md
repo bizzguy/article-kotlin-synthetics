@@ -310,9 +310,8 @@ What is the scope of findView
 
 - https://medium.com/learning-new-stuff/tips-for-writing-medium-articles-df8d7c7b33bf
 
-  Text-based Role Playing Game
-
-      [https://en.wikipedia.org/wiki/Colossal_Cave_Adventure]
+Text-based Role Playing Game
+[https://en.wikipedia.org/wiki/Colossal_Cave_Adventure]
 
   Read the Code!
 
