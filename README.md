@@ -12,7 +12,7 @@ it depends on the `Fragment#onCreateView` method having been
 run.  Ideally, use it in the `Fragment#onViewCreated` method or any subsequent method.
 
 In Activities, you can reference synthetics anytime after
-Activity.setContentView is called.
+`Activity#setContentView` is called.
 
 ### Using Kotlin Synthetics
 
