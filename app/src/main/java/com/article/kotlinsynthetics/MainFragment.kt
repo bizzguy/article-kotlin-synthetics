@@ -1,4 +1,4 @@
-package com.article.kotlinsynthetics.c_kotlin_butterknife
+package com.article.kotlinsynthetics
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,33 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-
-import com.article.kotlinsynthetics.R
 import androidx.fragment.app.Fragment
 import butterknife.BindView
 import butterknife.ButterKnife
 
 class MainFragment : Fragment() {
 
-    internal var counter = 0
+    private var counter = 0
 
     @BindView(R.id.countText)
-    lateinit var counterText: TextView
+    @JvmField
+    internal var countText: TextView? = null
 
     @BindView(R.id.button)
-    @JvmField
-    var button: Button? = null
+    internal var button: Button? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.main_fragment, container, false)
 
-        ButterKnife.bind(this, view)
+        ButterKnife.bind(activity!!, view)
 
-        counterText!!.text = Integer.toString(counter)
-
-        button!!.setOnClickListener { v ->
+        button!!.setOnClickListener {
             counter++
-            counterText!!.text = Integer.toString(counter)
+            countText!!.setText(counter)
         }
 
         return view

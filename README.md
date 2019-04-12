@@ -80,13 +80,13 @@ Activity will create a gragment.  The fragment will control the screen.
 
 #### Add properties to hold view references
 
-```java
+```
 TextView counterText;
 Button button;
 ```
 
 #### Bind properties to layout elements
-```
+```java
 countText = view.findViewById(R.id.countText)
 button = view.findViewById(R.id.button)
 ```
@@ -106,19 +106,212 @@ button.setOnClickListener(v -> {
 Let's drill down into the code for `findViewById` and see what is actually being executed.
 
 The first call is to `View.findViewById`
-```
+```java
+
+public final <T extends View> T findViewById(@IdRes int id) {
+    if (id == NO_ID) {
+        return null;
+    }
+    return findViewTraversal(id);
+}
+
+/**
+ * Used to mark a View that has no ID.
+ */
+public static final int NO_ID = -1;
 ```
 
 This calls 'View.traversal'
-```
+```java
+protected <T extends View> T findViewTraversal(@IdRes int id) {
+    if (id == mID) {
+        return (T) this;
+    }
+    return null;
+}
 ```
 
-View traversal is over-ridden by ViewGroup
-- ViewGroup override of traversal
+What is the `protected` modifier for?  This is for methods with default
+implementations that can be over-ridden in subtypes
+
+Layouts have their own version of ~findViewTraversal~
+
+'ViewGroup.traversal'
+```java
+@Override
+protected <T extends View> T findViewTraversal(@IdRes int id) {
+    if (id == mID) {
+        return (T) this;
+    }
+
+    final View[] where = mChildren;
+    final int len = mChildrenCount;
+
+    for (int i = 0; i < len; i++) {
+        View v = where[i];
+
+        if ((v.mPrivateFlags & PFLAG_IS_ROOT_NAMESPACE) == 0) {
+            v = v.findViewById(id);
+
+            if (v != null) {
+                return (T) v;
+            }
+        }
+    }
+
+    return null;
+}
+```
+
+The important lines are
+
+final View[] where = mChildren;
+
+and 
+
+v = v.findViewById(id);
+
+If the `ViewGroup` itself is not the view being looked for, 
+then search through all the children.
+
+The first view or child with the id is selected.
+
 
 # Step 2 - Replace `View#findViewById` with ButterKnife
 
+#### Assign each view property to its corresponding layout element
+
+The ButterKnife annotation `@BindView` tells it which XML element
+the property should be associated with.
+
+```
+    @BindView(R.id.text_counter)
+    TextView counterText;
+
+    @BindView(R.id.button)
+    Button button;
+```
+
+@BindView fields must not be private or static
+
+#### Tell ButterKnife to bind the layout elements and the view properties
+
+BK needs to be called to perform the binding.  In this case,
+"binding" refers to the process of wiring the Java property
+to the XML layout element.
+
+```
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.main_fragment, container, false);
+
+        ButterKnife.bind(this, view);
+```
+
+#### Review the code behind the binding
+
+The BK annotation generate some hidden code to perform the binding.
+
+Look in the directory
+
+  /app/build/generated/source/kapt/debug/com/article/kotlinsynthetics/b_java_butterknife
+  
+Now examine the file
+
+  MainFragment_ViewBinding
+  
+Note.  BK names the binding file after the annotated class
+by using the class name appended with "_ViewBinding"
+
+```
+    target.counterText = Utils.findRequiredViewAsType(source, R.id.text_counter, "field 'counterText'", TextView.class);
+    target.button = Utils.findRequiredViewAsType(source, R.id.button, "field 'button'", Button.class);
+```
+
+This is the code to perform the binding
+
+```
+  public static View findRequiredView(View source, @IdRes int id, String who) {
+    View view = source.findViewById(id);
+    if (view != null) {
+      return view;
+    }
+    String name = getResourceEntryName(source, id);
+    throw new IllegalStateException("Required view '"
+        + name
+        + "' with ID "
+        + id
+        + " for "
+        + who
+        + " was not found. If this view is optional add '@Nullable' (fields) or '@Optional'"
+        + " (methods) annotation.");
+  }
+```
+
 # Step 3 - Convert to Kotlin
+
+#### Run the Kotlin Converter Tool
+
+Select Java file
+
+Menu -> Code -> Convert Java File to Kotlin File
+
+```
+@BindView(R.id.countText)
+internal var countText: TextView? = null
+
+@BindView(R.id.button)
+internal var button: Button? = null
+```
+
+Kotlin has assigned an `internal` modifier to the properties.
+
+What is this for.  Think of it as "module private".  The properties
+are visible anywhere within the module.
+
+#### Examine Generated Kotlin Code
+
+Menu -> Tools -> Kotlin -> Show Kotlin Bytecode
+
+Once the bytecode as been generated, select "Decompile" to turn the byte
+code into a readable form in Java (this is just a temporary file).
+
+```
+@BindView(-1000031)
+@Nullable
+private TextView countText;
+
+@BindView(-1000090)
+@Nullable
+private Button button;
+```
+
+Remember, @BindView doesn't like privates so we get a compiler error.
+
+Since we've already removed "private" what do we do?
+
+Use the special Kotlin annotation @JvmField
+
+```kotlin
+@BindView(R.id.counterText)
+@JvmField
+var counterText: TextView? = null
+
+@BindView(R.id.button)
+@JvmField
+var button: Button? = null
+```
+
+What does JvmField do?  
+
+From the doc:
+
+Instructs the Kotlin compiler not to generate getters/setters for this property and expose it as a field.
+
+See the [Kotlin language documentation](https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html#instance-fields) for more information.
+
+The field will have the same visibility as the underlying property. 
+
 
 # Step 4 - Replace Butterknife with Kotlin Synthetics
 
@@ -259,12 +452,10 @@ What is the scope of findView
 
 | Feature | Java findViewById | ButterKnife | Kotlin Synthetics |
 | --- | --- | --- | --- |
-| Scope | | | |
-| Number of Lines | | | |
+| Scope | Broadest - can pick ids from any layout in app|same as FV | Narrower - can only pick ids from imported layouts|
+| Number of Lines |Property and wiring | Most - annotation, property and binding | Least - no wiring lines of code|
 | Performance | | | |
-| Other |sd f  sf sd fs f sf s fs fs f sf s fs s f s s f | s d fs  s sd fsfsfsdf sd fs df sdf s df sd fs  sf| s d fs  s sd fsfsfsdf sd fs df sdf s df sd fs  sf |
-
-
+| Building | | | |
 
 
 <table>
@@ -310,3 +501,15 @@ Read the Code!
 Text based adventure games
 Professor - don't read code is same as can't read code
 Design Patterns
+
+Find my children
+
+Wiring vs Data Binding
+
+Wiring is the technique of associated views defined in layouts with
+the Java or Kotlin code that controls them
+
+Data binding goes one step further
+- wiring
+- assign data values and handle changes in data values
+from either the screen or other sources

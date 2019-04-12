@@ -17,11 +17,11 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar!!.title = "Kotlin - synthetics - No Fragment"
 
-        text_counter!!.text = Integer.toString(counter)
+        countText!!.text = Integer.toString(counter)
 
         button!!.setOnClickListener {
             counter++
-            text_counter!!.text = Integer.toString(counter)
+            countText!!.text = Integer.toString(counter)
         }
 
     }

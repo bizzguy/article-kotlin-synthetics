@@ -19,7 +19,7 @@ public class MainFragment extends Fragment {
 
     int counter = 0;
 
-    @BindView(R.id.text_counter)
+    @BindView(R.id.countText)
     TextView counterText;
 
     @BindView(R.id.button)

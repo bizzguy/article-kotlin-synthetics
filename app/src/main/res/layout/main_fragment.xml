@@ -8,10 +8,10 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/text_counter"
+        android:id="@+id/countText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="0"
+        android:text="0"
         android:textSize="96sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
