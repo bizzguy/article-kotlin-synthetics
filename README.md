@@ -78,6 +78,9 @@ Activity will create a gragment.  The fragment will control the screen.
 
 # Step 1 - Bind layout elements to Java properties using `View#findViewById`
 
+This step is just a quick reminder of how to connect XML layout elements to Java code.  This just puts us all on the same page for those who might be new to Android and gives us a bit of a deep-dive into how `findViewById` actually works. 
+This will be imporant since all the binding techniques use `findViewById` under the hood.
+
 #### Add properties to hold view references
 
 ```
@@ -179,6 +182,7 @@ The first view or child with the id is selected.
 
 # Step 2 - Replace `View#findViewById` with ButterKnife
 
+<<<<<<< HEAD
 #### Assign each view property to its corresponding layout element
 
 The ButterKnife annotation `@BindView` tells it which XML element
@@ -312,8 +316,22 @@ See the [Kotlin language documentation](https://kotlinlang.org/docs/reference/ja
 
 The field will have the same visibility as the underlying property. 
 
+=======
+Let's use the ButterKnife library to simplify the binding. 
+
+Since BK uses annotations, we can explore the generated code to understand how BK actually binds the view elements.
+
+We'll discover that it also uses findViewById.
+
+# Step 3 - Convert to Kotlin
+
+We'll convert the Java code to Kotlin just to emphasize the idea that any Java code (and any annotations) can also 
+run in Kotlin. 
+>>>>>>> 07780557bb73ae935eaf1403542a1f281619411d
 
 # Step 4 - Replace Butterknife with Kotlin Synthetics
+
+Now we'll actually replace ButterKnife with Kotlin Synthetics.
 
 #### Remove BK Annotations
 ```kotlin
@@ -488,12 +506,11 @@ What is the scope of findView
 - https://medium.com/learning-new-stuff/tips-for-writing-medium-articles-df8d7c7b33bf
 
 Text-based Role Playing Game
+[https://en.wikipedia.org/wiki/Colossal_Cave_Adventure]
 
-    [https://en.wikipedia.org/wiki/Colossal_Cave_Adventure]
+  Read the Code!
 
-Read the Code!
-
-    [https://blog.codinghorror.com/learn-to-read-the-source-luke/]
+      [https://blog.codinghorror.com/learn-to-read-the-source-luke/]
 
 
 [https://www.brandonbloom.name/blog/2012/04/16/learn-to-read-the-source-luke/]
