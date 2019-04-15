@@ -32,7 +32,7 @@ class MainFragment : Fragment() {
 
         button!!.setOnClickListener { v ->
             counter++
-            counterText!!.text = Integer.toString(counter)
+            counterText!!.text = counter.toString()
         }
 
         return view

@@ -1,4 +1,4 @@
-# Replacing ButterKnife with Kotlin Synthetics in Android Apps
+# Replacing findViewById or ButterKnife with Kotlin Synthetics in Android Apps
 
 ## TL;DR
 
@@ -25,7 +25,6 @@ Nothing special must be done to existing layouts.  Use them as they are.
   android:layout_height="wrap_content"
   android:layout_width="wrap_content" />
 ```
-The name of the field in code must be the same as the id (and the same case)
 
 #### Kotlin Code
 
@@ -37,9 +36,9 @@ myTextView.text = "Hello World"
 
 #### Libraries and Plugins
 
-Just include the Kotlin Extensions in your project.  It will be included automatically when you create a new project with the Android Studion wizard.  There is no need to add any additional libraries.
+Include the Kotlin Extensions in your project.  It will be included automatically when you create a new project with the Android Studion wizard.  There is no need to add any additional libraries.
 
-app/build.gradle
+`app/build.gradle`
 ```
 apply plugin: 'kotlin-android-extensions'
 ```
@@ -89,7 +88,7 @@ Button button;
 ```
 
 #### Bind properties to layout elements
-```java
+```
 countText = view.findViewById(R.id.countText)
 button = view.findViewById(R.id.button)
 ```
@@ -106,25 +105,23 @@ button.setOnClickListener(v -> {
 
 #### Explore findViewById
 
+
+
 Let's drill down into the code for `findViewById` and see what is actually being executed.
 
 The first call is to `View.findViewById`
-```java
 
+```
 public final <T extends View> T findViewById(@IdRes int id) {
     if (id == NO_ID) {
         return null;
     }
     return findViewTraversal(id);
 }
-
-/**
- * Used to mark a View that has no ID.
- */
-public static final int NO_ID = -1;
 ```
 
-This calls 'View.traversal'
+The method 'View.findViewTraversal'
+
 ```java
 protected <T extends View> T findViewTraversal(@IdRes int id) {
     if (id == mID) {
@@ -139,7 +136,8 @@ implementations that can be over-ridden in subtypes
 
 Layouts have their own version of ~findViewTraversal~
 
-'ViewGroup.traversal'
+`ViewGroup.findViewTraversal`
+
 ```java
 @Override
 protected <T extends View> T findViewTraversal(@IdRes int id) {
@@ -214,45 +212,84 @@ to the XML layout element.
 
 #### Review the code behind the binding
 
-The BK annotation generate some hidden code to perform the binding.
+The `@BindView` annotations causes BK to create some hidden generated code.
+
+BK names the binding file after the annotated class by using the class name appended with "_ViewBinding" 
+  
+Now examine the file
 
 Look in the directory
 
   /app/build/generated/source/kapt/debug/com/article/kotlinsynthetics/b_java_butterknife
   
-Now examine the file
-
-  MainFragment_ViewBinding
+  MainFragment_ViewBinding 
   
-Note.  BK names the binding file after the annotated class
-by using the class name appended with "_ViewBinding"
+  Here's the constructor.
 
 ```
-    target.counterText = Utils.findRequiredViewAsType(source, R.id.text_counter, "field 'counterText'", TextView.class);
-    target.button = Utils.findRequiredViewAsType(source, R.id.button, "field 'button'", Button.class);
+@UiThread
+public MainFragment_ViewBinding(MainFragment target, View source) {
+    this.target = target;
+    target.counterText = Utils.findRequiredViewAsType(source, R.id.countText, "field 'counterText'", TextView.class);
+    target.button = Utils.findOptionalViewAsType(source, R.id.button, "field 'button'", Button.class);
+}
 ```
 
-This is the code to perform the binding
+There is a line for each property to be bound to a layout element.
+Notice the constructor does not return any views, it initializes the property in the original class.
+
+We've got the reference to the property.  BK now finds the reference to the view.
+It does this in two steps.  
+First call `findRequiredViewAsType` which will return the reference as the 
+correct high level type
+
+
+butterknife.internal\Utils
+```
+  public static <T> T findRequiredViewAsType(View source, @IdRes int id, String who,
+      Class<T> cls) {
+    View view = findRequiredView(source, id, who);
+    return castView(view, id, who, cls);
+  }
+```
+
+Second by finding the view (as View type which must be recast)
+
+This is the code to find the view.
 
 ```
   public static View findRequiredView(View source, @IdRes int id, String who) {
     View view = source.findViewById(id);
     if (view != null) {
       return view;
-    }
-    String name = getResourceEntryName(source, id);
-    throw new IllegalStateException("Required view '"
-        + name
-        + "' with ID "
-        + id
-        + " for "
-        + who
-        + " was not found. If this view is optional add '@Nullable' (fields) or '@Optional'"
-        + " (methods) annotation.");
+    }  + " (methods) annotation.");
+    ...
   }
 ```
 
+Underneath it all, BK is just performing a `findViewById`
+
+How is the binding initialized:
+
+    ButterKnife.bind(this, view)
+    
+    public static Unbinder bind
+    
+    Constructor<? extends Unbinder> constructor = findBindingConstructorForClass(targetClass);
+
+    Class<?> bindingClass = cls.getClassLoader().loadClass(clsName + "_ViewBinding");
+    
+    constructor.newInstance(target, source);
+    
+Once `ButterKnife#bind` is run, the properties are initialized with references to the XML
+view elements.
+
+java.lang.reflect.Constructor uses reflection.  Will this be a performance issue?   
+
 # Step 3 - Convert to Kotlin
+
+We'll convert the Java code to Kotlin just to demonstrate that any Java code (and any annotations) can also 
+run in Kotlin.  This is an option step - we could remove ButterKnife and convert to Kotlin in a single step.
 
 #### Run the Kotlin Converter Tool
 
@@ -312,28 +349,19 @@ From the doc:
 
 Instructs the Kotlin compiler not to generate getters/setters for this property and expose it as a field.
 
+Causes the field to have the same visibility as the underlying property. 
+
 See the [Kotlin language documentation](https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html#instance-fields) for more information.
 
-The field will have the same visibility as the underlying property. 
 
-=======
-Let's use the ButterKnife library to simplify the binding. 
 
-Since BK uses annotations, we can explore the generated code to understand how BK actually binds the view elements.
-
-We'll discover that it also uses findViewById.
-
-# Step 3 - Convert to Kotlin
-
-We'll convert the Java code to Kotlin just to emphasize the idea that any Java code (and any annotations) can also 
-run in Kotlin. 
->>>>>>> 07780557bb73ae935eaf1403542a1f281619411d
 
 # Step 4 - Replace Butterknife with Kotlin Synthetics
 
-Now we'll actually replace ButterKnife with Kotlin Synthetics.
+Now let's replace ButterKnife with Kotlin Synthetics.
 
 #### Remove BK Annotations
+
 ```kotlin
     //@BindView(R.id.counterText)
     //@JvmField
@@ -345,91 +373,226 @@ Now we'll actually replace ButterKnife with Kotlin Synthetics.
 ```
 
 #### Remove BK Binding
+
 ```
      //ButterKnife.bind(this, view)
 ```
 
-#### Verify that BK is being used
-
 #### Remove properties since they are not used
+
 ```
     //var counterText: TextView? = null
 
     //var button: Button? = null
 ```
 
-#### Verify that KS is now being used
+#### Run the app and look for failures
+
+Examine logcat to see the error
+
+
+null pointer exception
+
+fix by moving code to onCreateView
+
+```java
+override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+    button!!.setOnClickListener {
+        counter++
+        countText!!.text = counter.toString()
+    }
+}
+```
+
+Re-run the app, it should work
+
+#### See how KS is working
 
 See import statements
 
-See code for __
+```
+import kotlinx.android.synthetic.main.main_fragment.*
+```
 
-Hash Map
-Wierdly named method
-Calls findViewById and caches results
+Also notice the all the BK import statements are gone.
 
-Which findView is running
-- View
-- Traversal
-- ViewGroup override of traversal
+##### How does KS reference the view elements.
 
-Could Android have cached the result of findViewById
+Show Kotlin Bytecode and Decompile back to java
+
+```
+public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
+  Intrinsics.checkParameterIsNotNull(view, "view");
+  Button var10000 = (Button)this._$_findCachedViewById(id.button);
+  if (var10000 == null) {
+     Intrinsics.throwNpe();
+  }
+
+  var10000.setOnClickListener((OnClickListener)(new OnClickListener() {
+     public final void onClick(View it) {
+        MainFragment.this.counter = MainFragment.this.counter + 1;
+        TextView var10000 = (TextView)MainFragment.this._$_findCachedViewById(id.countText);
+        if (var10000 == null) {
+           Intrinsics.throwNpe();
+        }
+
+        var10000.setText((CharSequence)String.valueOf(MainFragment.this.counter));
+     }
+  }));
+}
+```
+
+```
+Button var10000 = (Button)this._$_findCachedViewById(id.button);
+```
+
+Very strangely named method.  Using understore or $ to begin a
+method name is a typical way of avoiding collisions with regular
+methods
+
+_$_findCachedViewById
+```
+   public View _$_findCachedViewById(int var1) {
+      ...
+
+      View var2 = (View)this._$_findViewCache.get(var1);
+      if (var2 == null) {
+         ...
+         var2 = var10000.findViewById(var1);
+         this._$_findViewCache.put(var1, var2);
+      }
+
+      return var2;
+   }
+```
+
+#### The algorithm for the `findCachedViewById`
+
+- If cache storage is null then create it
+- Check cache storage for reference to view
+- If not in cache then look up reference using `findViewById`
+- If reference not in cache then add it to cache
+
+```
+private HashMap _$_findViewCache;
+```
+
+### Why did KS fail at first
+```
+View var10000 = this.getView();
+```
 
 
-covert to synthetics
+Fragment#getView
+```
+@Nullable
+public View getView() {
+    return mView;
+}
+```
 
-Comparison of BK with KS for each of these concerns
-- name space
-– show what happend if use same id in "include" or id from another activity
+Fragment#performCreateView
+```
+ mView = onCreateView(inflater, container, savedInstanceState);
+``` 
 
-Questions
- - AppCompatActivity or FragmentActivity
- – AppCompatActivity extends FragmentActivity
- - why do kotlin butterknife variables default to private
- - check what a regular variable defaults to
- - what does "kapt" mean (acronym?)
- - delete "build" directory before starting talk
- - refresh MainFragment before starting talk
-
-* Kotlin properties are private by default (with getters/setters)
- – https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html[https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html]
-
-when is binding done (performance)
- - BK - all fields at start up
- - KS - only fields that are actually used, when they are used
- name space
- - FV - all layouts
- - BK - only inflated view
- - KS - only inflated view
-
-* only have one layout
-* adapters could have layout encapsulated within them
-
-KS
- - imports fields in layout at compile time
- - creates hidden caching function that uses findViewById
-
-what data type is field when using KS
-
-very useful article about performance trade-offs
- https://proandroiddev.com/kotlin-android-synthetics-performance-analysis-with-butterknife-90a54ca4325d[https://proandroiddev.com/kotlin-android-synthetics-performance-analysis-with-butterknife-90a54ca4325d]
-
-medium - include stackoverflow link and github/gist links
-
-* check what modiefier a regular variable defaults to (ie private, val/var)
-
-Create a matrix of features to compare
- - lines of code
- - name space
- - caching / performance
- - use of annotations (might slow performance)
- - recommended by Jake Wharton yes/no
-
-Github Markdown Info
-https://guides.github.com/features/mastering-markdown/[https://guides.github.com/features/mastering-markdown/]
+Can't run `Fragment#getView` until after `onCreateView` is run.      
 
 
-How does activity set content?
+#### A little more cleanup
+
+Remove the !! code on the references
+```
+button!!.setOnClickListener
+```
+becomes
+```
+button.setOnClickListener
+```
+
+And now we're done!
+
+
+
+# Conclusion
+
+Kotlin Synthetics are an excellent solution for wiring XML layout elements to their controlling fragment or activity.
+
+## Comparison
+
+| Feature | Java findViewById | ButterKnife | Kotlin Synthetics |
+| --- | --- | --- | --- |
+| Scope | Broadest - can pick ids from any layout in app|same as FV | Narrower - can only pick ids from imported layouts|
+| Number of Lines |Code for Property and wiring | Code for annotation, property and binding (most) | No code for wiring (least) |
+| Performance | Uses findViewById | Uses findViewById - Also uses reflection to perform binding | Uses findViewById |
+| Building | Minimal | Annotation processing | Minimal |
+| Recommended by Jake Wharton | No | He wrote ButterKnife | He is now the Kotlin Ambassador at Google |
+
+
+
+Read the Code!
+
+[https://blog.codinghorror.com/learn-to-read-the-source-luke/]
+
+
+
+
+## Followup Questions
+
+#### Could Android have cached the result of findViewById?
+
+#### Don't have to convert in some many steps.  Just go right to Kotlin Synthetics
+
+#### Alternate naming schemes for layout elements
+
+
+#### Difference between Wiring and Data Binding
+
+Wiring is the technique of associated views defined in layouts with
+the Java or Kotlin code that controls them
+
+Data binding goes one step further
+- wiring
+- assign data values and handle changes in data values
+from either the screen or other sources
+
+#### How is all this effected by Android Data Binding
+
+#### Why do both of these compile:
+
+```
+   counterText.setText(Integer.toString(counter));
+   counterText.setText(counter);
+```
+   
+But one of the above fails at runtime (when executing)   
+   
+#### Why does this fail to compile:
+   
+   counterText.text = counter
+
+#### In fragments, why does this fail:
+  
+   ButterKnife.bind(activity!!, view)
+   
+but this succeeds
+
+   ButterKnife.bind(this, view)  
+   
+   
+#### What is the scope of findView
+- getView
+- set in fragment
+- whatever is returned by the onCreateView
+- which is the layout
+- can there be two layouts (other)
+- yes, but you'll see it in the imports
+- often it is an adapter layout which could be moved to adapter
+- create link check to very that there are not two synthetic imports
+-- this happens alot because of copy and paste
+
+#### How does Activity set content?
 
 AppCompatDelegateImpl.java#465
 ```
@@ -443,90 +606,44 @@ public void setContentView(int resId) {
 }
 ```
 
+#### What data type is field when using KS
 
-What is the scope of findView
-- getView
-- set in fragment
-- whatever is returned by the onCreateView
-- which is the layout
-- can there be two layouts (other)
-- yes, but you'll see it in the imports
-- often it is an adapter layout which could be moved to adapter
-- create link check to very that there are not two synthetic imports
--- this happens alot because of copy and paste
+#### What happens if the same id is used in "include" (or id from another fragment)
 
-
-## Followup Questions
+#### When is wiring performed
+ - BK - all fields at start up
+ - KS - only fields that are actually used, when they are used name space
+ - FV - all layouts
+ - BK - only inflated view
+ - KS - only inflated view
  
-- How is all this effected by Android Data Binding
+#### AppCompatActivity or FragmentActivity
 
-- Don't have to convert in some many steps.  Just go right to Kotlin Synthetics
+#### AppCompatActivity extends FragmentActivity
 
-- Alternate naming schemes for layout elements.
+#### why do kotlin butterknife variables default to private
 
-# Conclusion
+#### check what a regular variable defaults to
 
-## Comparison
-
-| Feature | Java findViewById | ButterKnife | Kotlin Synthetics |
-| --- | --- | --- | --- |
-| Scope | Broadest - can pick ids from any layout in app|same as FV | Narrower - can only pick ids from imported layouts|
-| Number of Lines |Property and wiring | Most - annotation, property and binding | Least - no wiring lines of code|
-| Performance | | | |
-| Building | | | |
-
-
-<table>
-  
-<tr>
-  <th width="16%">Feature</th>
-  <th width="28%">Android findViewById</th>
-  <th width="28%">ButterKnife</th>
-  <th width="28%">Kotlin Synthetics</th>
-</tr>
-
-<tr>
-  <td>Number of Lines</td> 
-  <td>sd f  sf sd fs f sf s fs fs f sf s fs s f s s f </td>
-  <td>s d fs  s sd fsfsfsdf sd fs df sdf s df sd fs  sf </td>
-  <td>s d fs  s sd fsfsfsdf sd fs df sdf s df sd fs  sf </td>
-</tr>
-
-</table>
-
+#### what does "kapt" mean (acronym?)
 
 
 
 ## Resources
 
-- https://stackoverflow.com/questions/20160190/uniqueness-of-an-id-for-view-object-within-a-tree[https://stackoverflow.com/questions/20160190/uniqueness-of-an-id-for-view-object-within-a-tree]
+Reach me at: [jamesharmon@gmail.com]
 
-- https://stackoverflow.com/questions/18067426/are-android-view-id-supposed-to-be-unique[https://stackoverflow.com/questions/18067426/are-android-view-id-supposed-to-be-unique]
+LinkedIn: [https://www.linkedin.com/in/jamesharmonandroid/]
 
-- https://medium.com/learning-new-stuff/tips-for-writing-medium-articles-df8d7c7b33bf
+Useful article about performance trade-offs
 
-Text-based Role Playing Game
+[https://proandroiddev.com/kotlin-android-synthetics-performance-analysis-with-butterknife-90a54ca4325d]
+
+Kotlin properties are private by default (with getters/setters)
+
+[https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html]
+
+
+Text-based Role Playing Game:
+
 [https://en.wikipedia.org/wiki/Colossal_Cave_Adventure]
-
-  Read the Code!
-
-      [https://blog.codinghorror.com/learn-to-read-the-source-luke/]
-
-
-[https://www.brandonbloom.name/blog/2012/04/16/learn-to-read-the-source-luke/]
-
-Text based adventure games
-Professor - don't read code is same as can't read code
-Design Patterns
-
-Find my children
-
-Wiring vs Data Binding
-
-Wiring is the technique of associated views defined in layouts with
-the Java or Kotlin code that controls them
-
-Data binding goes one step further
-- wiring
-- assign data values and handle changes in data values
-from either the screen or other sources
