@@ -30,7 +30,7 @@ Nothing special must be done to existing layouts.  Use them as they are.
 
 Just reference the element with the same name as in the layout.  There is no need to create an instance property.
 
-```kotlin
+```.java
 myTextView.text = "Hello World"
 ```
 
@@ -38,7 +38,7 @@ myTextView.text = "Hello World"
 
 Include the Kotlin Extensions in your project.  It will be included automatically when you create a new project with the Android Studion wizard.  There is no need to add any additional libraries.
 
-`app/build.gradle`
+File: `app/build.gradle`
 ```
 apply plugin: 'kotlin-android-extensions'
 ```
@@ -122,7 +122,7 @@ public final <T extends View> T findViewById(@IdRes int id) {
 
 The method 'View.findViewTraversal'
 
-```java
+```.java
 protected <T extends View> T findViewTraversal(@IdRes int id) {
     if (id == mID) {
         return (T) this;
@@ -138,7 +138,7 @@ Layouts have their own version of ~findViewTraversal~
 
 `ViewGroup.findViewTraversal`
 
-```java
+```.java
 @Override
 protected <T extends View> T findViewTraversal(@IdRes int id) {
     if (id == mID) {
@@ -166,24 +166,28 @@ protected <T extends View> T findViewTraversal(@IdRes int id) {
 
 The important lines are
 
+```
 final View[] where = mChildren;
+```
 
 and 
 
+```
 v = v.findViewById(id);
+```
 
 If the `ViewGroup` itself is not the view being looked for, 
-then search through all the children.
-
-The first view or child with the id is selected.
+then search through all the children.  The first view or child with the id is selected.
 
 
 # Step 2 - Replace `View#findViewById` with ButterKnife
 
-<<<<<<< HEAD
+Although BK has other capabilities, such as wiring `onClick` listeners, its primary
+purpose is to replace `findViewById`
+
 #### Assign each view property to its corresponding layout element
 
-The ButterKnife annotation `@BindView` tells it which XML element
+The ButterKnife annotation `@BindView` tells BK which XML element
 the property should be associated with.
 
 ```
@@ -395,7 +399,7 @@ null pointer exception
 
 fix by moving code to onCreateView
 
-```java
+```.java
 override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
     button!!.setOnClickListener {
@@ -411,7 +415,7 @@ Re-run the app, it should work
 
 See import statements
 
-```
+```.java
 import kotlinx.android.synthetic.main.main_fragment.*
 ```
 
@@ -421,7 +425,7 @@ Also notice the all the BK import statements are gone.
 
 Show Kotlin Bytecode and Decompile back to java
 
-```
+```.java
 public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
   Intrinsics.checkParameterIsNotNull(view, "view");
   Button var10000 = (Button)this._$_findCachedViewById(id.button);
