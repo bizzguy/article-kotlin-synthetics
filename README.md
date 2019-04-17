@@ -55,7 +55,8 @@ Download the sample project from
 
 This sample app displays a screen with a counter starting at 0 and a button which will increment the counter when pressed.
 
-<< screen shot >>
+![App Screen Shot](images/app-screen.png)
+
 
 #### Review Gradle build files 
 
