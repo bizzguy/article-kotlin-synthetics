@@ -589,13 +589,22 @@ Can't run `Fragment#getView` until after `onCreateView` is run.
 
 #### A little more cleanup
 
-Remove the !! code on the references
+Remove the call to super in `onViewCreated`
+
+Remove the double bangs
+
+Use the `toString` method on int (this is a Kotlin extension)
+
 ```
-button!!.setOnClickListener
-```
-becomes
-```
-button.setOnClickListener
+override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+    countText.text = count.toString()
+
+    button.setOnClickListener {
+        count++
+        countText.text = count.toString()
+    }
+}
 ```
 
 And now we're done!
@@ -618,21 +627,16 @@ Kotlin Synthetics are an excellent solution for wiring XML layout elements to th
 
 
 
-Read the Code!
-
-[https://blog.codinghorror.com/learn-to-read-the-source-luke/]
-
-
-
 
 ## Followup Questions
 
-#### Could Android have cached the result of findViewById?
-
 #### Don't have to convert in some many steps.  Just go right to Kotlin Synthetics
+
+#### Could Android have cached the result of findViewById?
 
 #### Alternate naming schemes for layout elements
 
+What happens if you name your view elements like this:  android:id="@id/counter_text
 
 #### Difference between Wiring and Data Binding
 
@@ -644,7 +648,7 @@ Data binding goes one step further
 - assign data values and handle changes in data values
 from either the screen or other sources
 
-#### How is all this effected by Android Data Binding
+#### How is all this effected by Android Data Binding and Architecture components
 
 #### Why do both of these compile:
 
@@ -667,17 +671,15 @@ but this succeeds
 
    ButterKnife.bind(this, view)  
    
-   
-#### What is the scope of findView
-- getView
-- set in fragment
-- whatever is returned by the onCreateView
-- which is the layout
-- can there be two layouts (other)
-- yes, but you'll see it in the imports
-- often it is an adapter layout which could be moved to adapter
-- create link check to very that there are not two synthetic imports
--- this happens alot because of copy and paste
+#### What is the scope of findViewById for each technique
+
+- findViewById - entire R.id namespace
+- BK - entire R.id namespace
+- KS - only imported layouts
+
+#### What if there are two layouts
+
+Often the layout for an adapter can be moved into the adapter
 
 #### How does Activity set content?
 
@@ -698,6 +700,7 @@ public void setContentView(int resId) {
 #### What happens if the same id is used in "include" (or id from another fragment)
 
 #### When is wiring performed
+
  - BK - all fields at start up
  - KS - only fields that are actually used, when they are used name space
  - FV - all layouts
@@ -710,9 +713,11 @@ public void setContentView(int resId) {
 
 #### why do kotlin butterknife variables default to private
 
-#### check what a regular variable defaults to
+#### check what modifier a Kotlin variable defaults to
 
 #### what does "kapt" mean (acronym?)
+
+Kotlin Annotation Processing Tool
 
 
 
@@ -730,6 +735,9 @@ Kotlin properties are private by default (with getters/setters)
 
 [https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html]
 
+Read the Code!
+
+[https://blog.codinghorror.com/learn-to-read-the-source-luke/]
 
 Text-based Role Playing Game:
 
