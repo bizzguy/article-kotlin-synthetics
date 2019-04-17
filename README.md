@@ -628,7 +628,7 @@ Kotlin Synthetics are an excellent solution for wiring XML layout elements to th
 
 
 
-## Followup Questions
+# Followup Questions
 
 #### Don't have to convert in some many steps.  Just go right to Kotlin Synthetics
 
