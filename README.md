@@ -3,13 +3,13 @@
 ## TL;DR
 
 Kotlin synthetics is an excellent replacement for either findViewById or
-ButterKnife when accessing view elements in XML layouts.
-It reduces the lines of code, avoids annotations and provides some scoping.
+ButterKnife when wiring view elements in XML layouts.
+It reduces the lines of code, avoids annotations and provides narrower scoping.
 Since it uses `findViewById` internally, it is just as performant as the other two techniques.
 
 But there are some gotchas.  You must be careful when using synthetics in Fragments since
 they depend on the `Fragment#onCreateView` method having been
-run.  Ideally, use them in the `Fragment#onViewCreated` method called after that.
+run.  Ideally, use them in the `Fragment#onViewCreated` or any method called after that.
 
 In Activities, you can reference synthetics anytime after
 `Activity#setContentView` is called.
@@ -70,9 +70,91 @@ Project uses AndroidX
 
 Synthetics requires no changes to layouts.
 
+app/src/main/res/layout/main_fragment.xml
+```.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/countText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textSize="96sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Increment Counter"
+        android:textSize="24sp"
+        android:padding="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+
 #### Review Starting Code
 
-Activity will create a gragment.  The fragment will control the screen.
+Activity will create a fragment.  The fragment will control the screen.
+
+MainActivity.java
+```.java
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_activity);
+
+        getSupportActionBar().setTitle("Kotlin Synthetics");
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, MainFragment.newInstance())
+                    .commitNow();
+        }
+    }
+
+}
+```
+
+MainFragment.java
+```.java
+public class MainFragment extends Fragment {
+
+    public static MainFragment newInstance() {
+        return new MainFragment();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.main_fragment, container, false);
+
+        return view;
+    }
+
+}
+```
 
 
 # Step 1 - Bind layout elements to Java properties using `View#findViewById`
