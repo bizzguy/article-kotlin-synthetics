@@ -188,7 +188,7 @@ button.setOnClickListener(v -> {
 
 #### Explore findViewById
 
-
+![Read the code](images/read-the-source-code.jpg)
 
 Let's drill down into the code for `findViewById` and see what is actually being executed.
 
